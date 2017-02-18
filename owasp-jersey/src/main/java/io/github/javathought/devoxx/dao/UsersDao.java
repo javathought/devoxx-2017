@@ -2,6 +2,7 @@ package io.github.javathought.devoxx.dao;
 
 import io.github.javathought.devoxx.model.Credentials;
 import io.github.javathought.devoxx.model.User;
+import io.github.javathought.devoxx.security.PasswordStorage;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -80,10 +81,21 @@ public class UsersDao {
     }
 
     public static boolean authenticate(Credentials credentials) {
-        return DSL.using(conn).selectFrom(USERS)
-                .where(USERS.NAME.eq(credentials.getUsername())
-                        .and(USERS.PASSWORD.eq(credentials.getPassword())))
-                .fetchOptional().isPresent();
+        boolean authenticated = false;
+        Optional<String> hashOpt = DSL.using(conn).select(USERS.PASSWORD).from(USERS)
+                .where(USERS.NAME.eq(credentials.getUsername()))
+                .fetchOptional().map(r -> r.get(USERS.PASSWORD));
+
+        if (hashOpt.isPresent()) {
+            try {
+                authenticated = PasswordStorage.verifyPassword(credentials.getPassword(), hashOpt.get());
+            } catch (PasswordStorage.InvalidHashException | PasswordStorage.CannotPerformOperationException e) {
+                LOG.error("Erreur to auth {}");
+                authenticated = false;
+            }
+        }
+
+        return authenticated;
     }
 
     public static User mapUser(Record record) {

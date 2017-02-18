@@ -2,9 +2,11 @@ package io.github.javathought.devoxx.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.javathought.devoxx.security.PasswordStorage;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.security.auth.Subject;
+import javax.xml.bind.ValidationException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -44,7 +46,7 @@ public class User implements Principal {
     public User(long id,
                 UUID uuid,
                 String name,
-                String key) {
+                String key) throws ValidationException {
         this.id = id;
         this.uuid = uuid;
         this.name = name;
@@ -84,11 +86,11 @@ public class User implements Principal {
     }
 
     public String getKey() {
-        return "";
+        return key;
     }
 
     @JsonProperty
-    public void setKey(String key) {
+    public void setKey(String key) throws ValidationException {
         if (key.isEmpty()) {
             this.key = "";
         } else {
@@ -133,20 +135,12 @@ public class User implements Principal {
                 .toString();
     }
 
-    public static String getHash(String password) {
-/*
-        MessageDigest digest = null;
-        String hash;
+    public static String getHash(String password) throws ValidationException {
         try {
-            digest = MessageDigest.getInstance("SHA-256");
-            byte[] bytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-            hash = new String(bytes, StandardCharsets.UTF_8);
-        } catch (NoSuchAlgorithmException e) {
-            hash = password;
+            return PasswordStorage.createHash(password);
+        } catch (PasswordStorage.CannotPerformOperationException e) {
+            throw new ValidationException("Unable to set encrypted password");
         }
-        return hash;
-*/
-        return sha256Hex(password);
     }
 
 }
