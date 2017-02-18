@@ -35,7 +35,7 @@
         <div class="form-group" ng-class="{'has-error' : userForm.confirmation.$invalid}">
             <label for="confirmation" class="col-sm-2">Confirmation *</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control"  name="confirmation" placeholder="Confirmation du mot de passe" ng-model="confirmation"
+              <input type="password" class="form-control"  name="confirmation" placeholder="Confirmation du mot de passe" ng-model="confirmation"
                 ui-validate=" '$value==user.key' " ui-validate-watch=" 'user.key' " >
               <ng-messages for="userForm.confirmation.$error" role="alert">
                   <!--

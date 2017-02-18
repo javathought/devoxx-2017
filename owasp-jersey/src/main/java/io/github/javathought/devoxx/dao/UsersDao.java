@@ -80,26 +80,10 @@ public class UsersDao {
     }
 
     public static boolean authenticate(Credentials credentials) {
-
-        /*
-        Hack with :
-        {
-            "username": "admin",
-            "password": "e' or '1' = '1"
-        }
-        */
-
-        return ! DSL.using(conn)
-                .fetch("SELECT 1 FROM users WHERE name = '" + credentials.getUsername()
-                + "' AND password = '" + credentials.getPassword()
-                        + "'").isEmpty();
-
-/*
         return DSL.using(conn).selectFrom(USERS)
                 .where(USERS.NAME.eq(credentials.getUsername())
-                        .and(USERS.PASSWORD.eq(User.getHash(credentials.getPassword()))))
+                        .and(USERS.PASSWORD.eq(credentials.getPassword())))
                 .fetchOptional().isPresent();
-*/
     }
 
     public static User mapUser(Record record) {
