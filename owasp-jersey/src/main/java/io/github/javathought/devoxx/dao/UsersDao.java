@@ -3,11 +3,13 @@ package io.github.javathought.devoxx.dao;
 import io.github.javathought.devoxx.model.Credentials;
 import io.github.javathought.devoxx.model.User;
 import io.github.javathought.devoxx.security.PasswordStorage;
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +24,7 @@ import static io.github.javathought.devoxx.db.Tables.USERS;
 public class UsersDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(UsersDao.class);
+    private static final int BEARER_BYTE_SIZE = 32;
     private static Connection conn = Connexion.getInstance().getDbConnection();
 
     public static List<User> getAll() {
@@ -61,7 +64,7 @@ public class UsersDao {
     }
 
     public static void update(User user) {
-        if (user.getKey().isEmpty()) {
+        if (StringUtils.isEmpty(user.getKey())) {
             DSL.using(conn).update(USERS)
                     .set(USERS.NAME, user.getName())
                     .where(USERS.ID.eq(user.getId()))
@@ -106,4 +109,24 @@ public class UsersDao {
         return user ;
     }
 
+    public static byte[] getBearer(Credentials credentials) {
+        SecureRandom random = new SecureRandom();
+        byte[] bearer = new byte[BEARER_BYTE_SIZE];
+        random.nextBytes(bearer);
+
+        DSL.using(conn).update(USERS)
+                .set(USERS.BEARER, bearer)
+                .where(USERS.NAME.eq(credentials.getUsername()))
+                .execute();
+
+
+        return bearer;
+    }
+
+    public static Optional<User> getByBearer(byte[] bearer) {
+        return DSL.using(conn).selectFrom(USERS)
+                .where(USERS.BEARER.eq(bearer))
+                .fetchOptional()
+                .map(UsersDao::mapUser);
+    }
 }

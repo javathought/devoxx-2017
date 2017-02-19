@@ -7,7 +7,7 @@ angular.module('Authentication')
     function (Base64, $http, $cookieStore, $rootScope, $timeout, Users) {
         var service = {};
 
-        service.Login = function (username, password, callback) {
+        service.Login = function (username, password, callback, errorcallback) {
 
             /* Use this for real authentication
              ----------------------------------------------*/
@@ -16,7 +16,7 @@ angular.module('Authentication')
                     callback(response);
                 })
                 .error(function (response) {
-                    callback(response);
+                    errorcallback(response);
                 });
 
         };

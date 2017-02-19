@@ -4,7 +4,9 @@ import io.github.javathought.devoxx.dao.RolesDao;
 import io.github.javathought.devoxx.dao.UsersDao;
 import io.github.javathought.devoxx.model.Credentials;
 import io.github.javathought.devoxx.model.Role;
+import io.github.javathought.devoxx.model.User;
 import io.github.javathought.devoxx.resources.utils.ResponseMessage;
+import io.github.javathought.devoxx.security.PasswordStorage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -43,7 +45,8 @@ public class AuthenticateResource {
             @ApiResponse(code = 401, message = "Wrong user or password")})
     public Response authenticate(Credentials credentials) {
         if (UsersDao.authenticate(credentials)) {
-            StringBuilder auth = new StringBuilder().append("Basic ").append(credentials.encode());
+            byte[] bearer = UsersDao.getBearer(credentials);
+            StringBuilder auth = new StringBuilder().append("Bearer ").append(PasswordStorage.toBase64(bearer));
             return Response.ok()
                     .cookie(new NewCookie("Authorization", auth.toString(), null, null,
                             DEFAULT_VERSION, null, DEFAULT_MAX_AGE, null, true, true))
@@ -62,7 +65,7 @@ public class AuthenticateResource {
             @ApiResponse(code = 200, message = "roles retrieved"),
             @ApiResponse(code = 500, message = "Something got wrong on server")})
     public List<Role> getRoles() {
-        return RolesDao.getUserRoles(securityContext.getUserPrincipal().getName());
+        return RolesDao.getUserRoles((User) securityContext.getUserPrincipal());
     }
 
 }

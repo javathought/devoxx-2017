@@ -12,15 +12,21 @@ angular.module('Authentication')
 
         $scope.login = function () {
             $scope.dataLoading = true;
-            AuthenticationService.Login($scope.username, $scope.password, function(response) {
+            AuthenticationService.Login($scope.username, $scope.password,
+              function(response) {
                 if(response.success) {
                     AuthenticationService.SetCredentials($scope.username, $scope.password);
                     $('#login-modal').removeClass('fade');$('#login-modal').modal('hide');
-                    $state.go('home'); 
+                    $state.go('home');
                 } else {
                     $scope.error = response.message;
                     $scope.dataLoading = false;
                 }
-            });
+            },
+            function(error) {
+              $scope.error = error.message || error.status + "-" + error.statusText ;
+              $scope.dataLoading = false;
+            }
+          );
         };
     }]);

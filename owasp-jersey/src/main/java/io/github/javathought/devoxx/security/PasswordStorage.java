@@ -195,7 +195,7 @@ public class PasswordStorage
         return DatatypeConverter.parseBase64Binary(hex);
     }
 
-    private static String toBase64(byte[] array)
+    public static String toBase64(byte[] array)
     {
         return DatatypeConverter.printBase64Binary(array);
     }
