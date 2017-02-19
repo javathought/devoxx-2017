@@ -13,10 +13,12 @@ import javax.ws.rs.Priorities;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 @Priority(Priorities.AUTHENTICATION)
@@ -42,17 +44,17 @@ public class SecurityFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
         //Get request headers
-        final MultivaluedMap<String, String> headers = requestContext.getHeaders();
+        final Map<String, Cookie> cookies = requestContext.getCookies();
 
         //Fetch authorization header
-        final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
+        final Cookie authorization = cookies.get(AUTHORIZATION_PROPERTY);
 
         //If no authorization information present; block access
-        if(! (authorization == null || authorization.isEmpty()))
+        if(! (authorization == null))
         {
 
             //Get encoded username and password
-            final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+            final String encodedUserPassword = authorization.getValue().replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
             //Decode username and password
             String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));;

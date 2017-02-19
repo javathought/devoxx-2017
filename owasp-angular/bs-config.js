@@ -13,7 +13,9 @@ module.exports = {
     "middleware": {
       1: apiProxy
     },
-  "https": true
+  "https": true,
+  "httpOnly": true,  // dont let browser javascript access cookie ever
+  "secure": true // only use cookie over https
   }
 
 };

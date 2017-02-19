@@ -9,16 +9,20 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.glassfish.jersey.internal.util.Base64;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 import java.util.List;
 
 import static io.github.javathought.devoxx.resources.AuthenticateResource.PATH;
+import static javax.ws.rs.core.Cookie.DEFAULT_VERSION;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.NewCookie.DEFAULT_MAX_AGE;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 @Path(PATH)
@@ -39,9 +43,14 @@ public class AuthenticateResource {
             @ApiResponse(code = 401, message = "Wrong user or password")})
     public Response authenticate(Credentials credentials) {
         if (UsersDao.authenticate(credentials)) {
-            return Response.ok().entity(new ResponseMessage(true, "user authenticated")).build();
+            StringBuilder auth = new StringBuilder().append("Basic ").append(credentials.encode());
+            return Response.ok()
+                    .cookie(new NewCookie("Authorization", auth.toString(), null, null,
+                            DEFAULT_VERSION, null, DEFAULT_MAX_AGE, null, true, true))
+                    .entity(new ResponseMessage(true, "user authenticated")).build();
         } else {
-            return Response.status(UNAUTHORIZED).entity(new ResponseMessage(false, "Username or password is incorrect")).build();
+            return Response.status(UNAUTHORIZED)
+                    .entity(new ResponseMessage(false, "Username or password is incorrect")).build();
         }
 
     }

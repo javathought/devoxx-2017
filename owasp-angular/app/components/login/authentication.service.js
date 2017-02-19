@@ -29,12 +29,7 @@ angular.module('Authentication')
           };
 
         service.SetCredentials = function (username, password) {
-            var authdata = Base64.encode(username + ':' + password);
-
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
-
             $rootScope.globals = {
-                authdata: authdata,
                 currentUser: Users.current(function(success) {
                   $cookieStore.put('globals', $rootScope.globals);
                   service.CheckRoles(success.roles);
