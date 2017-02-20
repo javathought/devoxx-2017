@@ -12,7 +12,8 @@ module('devoxxApp', [
   'devoxxApp.services',
   'Authentication',
   'ngCookies',
-  'ui.validate'
+  'ui.validate',
+  'ngSanitize'
 ])
  
 .config( function ($stateProvider,$urlRouterProvider,$locationProvider, $rootScopeProvider) {

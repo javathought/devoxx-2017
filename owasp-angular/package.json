@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "angular-cookies": "^1.6.2",
+    "angular-sanitize": "^1.6.2",
     "angular-ui-validate": "^1.2.2",
     "http-proxy-middleware": "^0.17.3"
   }

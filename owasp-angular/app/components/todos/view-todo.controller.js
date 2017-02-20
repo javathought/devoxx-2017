@@ -1,7 +1,11 @@
-angular.module('devoxxApp.controllers').controller('ViewTodoController', ['$scope', '$http', '$log', '$stateParams', '$state', 'Todos',
-      function ($scope, $http, $log, $stateParams ,$state, Todos) {
+angular.module('devoxxApp.controllers')
+.controller('ViewTodoController', ['$scope', '$http', '$log', '$sce', '$stateParams', '$state', 'Todos',
+      function ($scope, $http, $log, $sce, $stateParams ,$state, Todos) {
 
 
+        $scope.trusted = function(text) {
+               return $sce.trustAsHtml(text);
+             };
         // $scope.todos = Todo.query();
 
          $scope.state = "new";
