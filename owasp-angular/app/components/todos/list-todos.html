@@ -36,9 +36,9 @@
         </thead>
         <tbody>
         <tr ng-repeat="todo in todos | filter : search">
-            <td><a href="#/todos/{{todo.id}}">{{todo.summary}}</a></td>
+            <td><a href="#/todos/{{todo.uuid}}">{{todo.summary}}</a></td>
             <td class="text-center buttons"><span class="pull-right">
-                <a class="btn  btn-xs" href="#/todos/{{todo.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+                <a class="btn  btn-xs" href="#/todos/{{todo.uuid}}"><i class="glyphicon glyphicon-pencil"></i></a>
                 <a class="btn  btn-xs danger" ng-click="deletetodo(todo)"><i
                         class="glyphicon glyphicon glyphicon-trash alert-danger"></i></a>
                 </span>

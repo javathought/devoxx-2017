@@ -16,8 +16,8 @@ import java.util.UUID;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Todo {
-    private long id;
     @XmlTransient
+    private long id;
     private UUID uuid;
     private long userId;
     private String summary;

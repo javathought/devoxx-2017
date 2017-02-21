@@ -16,6 +16,7 @@ import javax.ws.rs.core.SecurityContext;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static io.github.javathought.devoxx.resources.TodosResource.PATH;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -44,15 +45,15 @@ public class TodosResource {
 
     @GET
     @Produces({APPLICATION_JSON, APPLICATION_XML})
-    @Path("/{id : \\d+}")
+    @Path("/{id}")
     @ApiOperation(value = "Get todo by id", notes = "Returns todo identified by is internal id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Todo not found"),
             @ApiResponse(code = 500, message = "Something wrong in Server")})
-    public Response getById(@PathParam("id") long id) {
+    public Response getById(@PathParam("id") UUID id) {
 
-        Optional<Todo> todoOptional = TodosDao.getByIdAndUser(id, (User) security.getUserPrincipal());
+        Optional<Todo> todoOptional = TodosDao.getByUuidAndUser(id, (User) security.getUserPrincipal());
 
         if (todoOptional.isPresent()) {
             return Response.ok().entity(todoOptional.get()).build();
@@ -77,13 +78,13 @@ public class TodosResource {
     @PUT
     @Consumes({APPLICATION_JSON, APPLICATION_XML})
     @Produces({APPLICATION_JSON, APPLICATION_XML})
-    @Path("/{id : \\d+}")
+    @Path("/{id}")
     @ApiOperation(value = "Modify some properties of a todo", notes = "post a new todo")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Updated"),
             @ApiResponse(code = 500, message = "Something wrong in Server")})
-    public Response update(@PathParam("id") long id, Todo todo) {
-        if ( !TodosDao.getByIdAndUser(id, (User) security.getUserPrincipal()).isPresent()) {
+    public Response update(@PathParam("id") UUID id, Todo todo) {
+        if ( !TodosDao.getByUuidAndUser(id, (User) security.getUserPrincipal()).isPresent()) {
             return Response.status(Response.Status.FORBIDDEN).build();
         } else {
             TodosDao.update(todo);
@@ -92,12 +93,12 @@ public class TodosResource {
     }
 
     @DELETE
-    @Path("/{id : \\d+}")
+    @Path("/{id}")
     @ApiOperation(value = "Modify some properties of a todo", notes = "post a new todo")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Updated"),
             @ApiResponse(code = 500, message = "Something wrong in Server")})
-    public Response delete(@PathParam("id") long id) {
+    public Response delete(@PathParam("id") UUID id) {
         TodosDao.delete(id);
         return Response.noContent().build();
     }
