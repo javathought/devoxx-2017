@@ -62,5 +62,12 @@ public class Connexion {
                 .putLong(uuid.getLeastSignificantBits()).array();
     }
 
+    public static UUID asUUID(byte[] bytes){
+        ByteBuffer bb = ByteBuffer.wrap(bytes);
+        long firstLong = bb.getLong();
+        long secondLong = bb.getLong();
+        return new UUID(firstLong, secondLong);
+    }
+
 
 }
