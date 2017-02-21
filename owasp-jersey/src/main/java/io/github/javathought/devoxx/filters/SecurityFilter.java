@@ -58,10 +58,10 @@ public class SecurityFilter implements ContainerRequestFilter {
         {
 
             //Get encoded username and password
-            final String encodedUserPassword = authorization.getValue().replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+            final String bearerCookie = authorization.getValue().replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
             //Decode username and password
-            byte[] bearer = Base64.decode(encodedUserPassword.getBytes());
+            byte[] bearer = Base64.decode(bearerCookie.getBytes());
 
             User user = UsersDao.getByBearer(bearer).orElseThrow(() -> new WebApplicationException(Response.Status.UNAUTHORIZED));
 

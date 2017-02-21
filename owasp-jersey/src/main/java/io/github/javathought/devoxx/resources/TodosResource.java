@@ -2,13 +2,16 @@ package io.github.javathought.devoxx.resources;
 
 import io.github.javathought.devoxx.dao.TodosDao;
 import io.github.javathought.devoxx.model.Todo;
+import io.github.javathought.devoxx.model.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import java.net.URI;
 import java.util.List;
@@ -25,6 +28,9 @@ import static javax.ws.rs.core.MediaType.APPLICATION_XML;
 @Api(value = PATH, description = "Browse Todos")
 public class TodosResource {
     public static final String PATH = "todos";
+
+    @Inject
+    SecurityContext security;
 
     @GET
     @Produces({APPLICATION_JSON, APPLICATION_XML})
@@ -46,7 +52,7 @@ public class TodosResource {
             @ApiResponse(code = 500, message = "Something wrong in Server")})
     public Response getById(@PathParam("id") long id) {
 
-        Optional<Todo> todoOptional = TodosDao.getById(id);
+        Optional<Todo> todoOptional = TodosDao.getByIdAndUser(id, (User) security.getUserPrincipal());
 
         if (todoOptional.isPresent()) {
             return Response.ok().entity(todoOptional.get()).build();
@@ -63,6 +69,7 @@ public class TodosResource {
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 500, message = "Something wrong in Server")})
     public Response create(Todo todo) {
+        todo.setUserId(((User)security.getUserPrincipal()).getId());
         TodosDao.create(todo);
         return Response.created(URI.create(PATH + "/" + todo.getId())).entity(todo).build();
     }
@@ -76,8 +83,12 @@ public class TodosResource {
             @ApiResponse(code = 200, message = "Updated"),
             @ApiResponse(code = 500, message = "Something wrong in Server")})
     public Response update(@PathParam("id") long id, Todo todo) {
-        TodosDao.update(todo);
-        return Response.ok(todo).build();
+        if ( !TodosDao.getByIdAndUser(id, (User) security.getUserPrincipal()).isPresent()) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        } else {
+            TodosDao.update(todo);
+            return Response.ok(todo).build();
+        }
     }
 
     @DELETE

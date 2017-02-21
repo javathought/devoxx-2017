@@ -2,6 +2,7 @@ package io.github.javathought.devoxx.dao;
 
 import io.github.javathought.devoxx.model.Credentials;
 import io.github.javathought.devoxx.model.Todo;
+import io.github.javathought.devoxx.model.User;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -37,6 +38,16 @@ public class TodosDao {
                 .fetchOptional()
                 .map(TodosDao::mapTodo);
     }
+
+    public static Optional<Todo> getByIdAndUser(long id, User userPrincipal) {
+        return DSL.using(conn).selectFrom(TODOS)
+                .where(TODOS.ID.eq(id))
+//                .where(TODOS.UUID.eq(UUIDToBytes(todo.getUuid())))
+                .and(TODOS.USER_ID.eq(userPrincipal.getId()))
+                .fetchOptional()
+                .map(TodosDao::mapTodo);
+    }
+
 
     public static void create(Todo todo) {
         long id = DSL.using(conn).insertInto(TODOS,

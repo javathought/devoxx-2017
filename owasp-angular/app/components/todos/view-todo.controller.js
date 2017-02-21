@@ -13,7 +13,13 @@ angular.module('devoxxApp.controllers')
             // Check if we have a ressource
          	if ($stateParams.id) {
          		$scope.state = "update";
-         		$scope.todo = Todos.get({id: $stateParams.id});
+         		$scope.todo = Todos.get({id: $stateParams.id},
+              function(success) {
+              },
+              function(error) {
+                  $scope.alerts.push({type: 'danger', msg: 'Impossible de lire la tâche ' + '  : ' + error.status + "-" + error.statusText, details: error.data});
+                  $state.go('todos');
+               });
          	} else {
             $scope.todo = {userId: $scope.globals.currentUser.id}
           }
