@@ -39,6 +39,7 @@ angular.module('Authentication')
         };
 
         service.ClearCredentials = function () {
+
           $rootScope.profileUser = false;
           $rootScope.profileWrite = false;
           $rootScope.login = false;

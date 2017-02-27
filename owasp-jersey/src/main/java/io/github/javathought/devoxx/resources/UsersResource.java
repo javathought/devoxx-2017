@@ -13,6 +13,7 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -22,6 +23,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import static io.github.javathought.devoxx.model.Role.ADMIN;
+import static io.github.javathought.devoxx.model.Role.USER;
 import static io.github.javathought.devoxx.resources.UsersResource.PATH;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
@@ -31,6 +34,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_XML;
  */
 @Path(PATH)
 @Api(value = PATH, description = "Browse users")
+@RolesAllowed(ADMIN)
 public class UsersResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(UsersResource.class);
@@ -105,20 +109,6 @@ public class UsersResource {
         return Response.noContent().build();
     }
 
-    @Path("current")
-    @Produces(APPLICATION_JSON)
-    @GET
-    public Response getUserInformations(@Context SecurityContext sc) {
-        return Response.ok().entity(sc.getUserPrincipal()).build();
-    }
-
-    @Path("/{id : \\d+}/todos")
-    @Produces(APPLICATION_JSON)
-    @GET
-    public List<Todo> getUserTodos(@PathParam("id") long id) {
-        return TodosDao.getByOwner(id);
-
-    }
 
 /*
     @Path("current/roles")

@@ -48,6 +48,11 @@ module('devoxxApp', [
             url         : '/users/:id',
             templateUrl : 'app/components/users/view-user.html',
             controller  : 'ViewUserController'
+          })
+          .state('profil', {
+            url         : '/profil',
+            templateUrl : 'app/components/users/view-user.html',
+            controller  : 'ViewProfilController'
           });
     $urlRouterProvider.otherwise('/');
 		// $locationProvider.html5Mode(true);

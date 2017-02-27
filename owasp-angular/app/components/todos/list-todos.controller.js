@@ -7,7 +7,7 @@ angular.module('devoxxApp.controllers')
 
       $scope.refresh = function () {
         // $scope.todos = $scope.globals.currentUser.$todos();
-        $scope.todos = Todos.fromUser({id: $scope.globals.currentUser.id});
+        $scope.todos = Todos.fromUser();
       }
       $scope.refresh();
 

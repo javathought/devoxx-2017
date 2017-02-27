@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static io.github.javathought.devoxx.model.Role.USER;
 import static io.github.javathought.devoxx.resources.TodosResource.PATH;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_XML;
@@ -27,6 +29,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_XML;
  */
 @Path(PATH)
 @Api(value = PATH, description = "Browse Todos")
+@RolesAllowed(USER)
 public class TodosResource {
     public static final String PATH = "todos";
 

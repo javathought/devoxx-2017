@@ -9,6 +9,7 @@ import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.Principal;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.util.List;
@@ -128,5 +129,12 @@ public class UsersDao {
                 .where(USERS.BEARER.eq(bearer))
                 .fetchOptional()
                 .map(UsersDao::mapUser);
+    }
+
+    public static void logout(Principal userPrincipal) {
+        DSL.using(conn).update(USERS)
+                .set(USERS.BEARER, "".getBytes())
+                .where(USERS.NAME.eq((userPrincipal).getName()))
+                .execute();
     }
 }
