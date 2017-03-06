@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
+<!--    <suppress>
+        <notes><![CDATA[
+      file name: mysql-connector-java-6.0.5.jar
+      ]]></notes>
+        <sha1>9d8df5a1f3273110f2a9ad304961bdd03d696d86</sha1>
+        <cpe>cpe:/a:mysql:mysql:6.0.5</cpe>
+    </suppress>-->
+</suppressions>
