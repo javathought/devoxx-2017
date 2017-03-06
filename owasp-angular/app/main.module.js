@@ -16,7 +16,10 @@ module('devoxxApp', [
   'ngSanitize'
 ])
  
-.config( function ($stateProvider,$urlRouterProvider,$locationProvider, $rootScopeProvider) {
+.config( function ($stateProvider,$urlRouterProvider,$locationProvider,
+  $rootScopeProvider, $httpProvider) {
+
+    $httpProvider.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 
     $stateProvider
           .state('home', {

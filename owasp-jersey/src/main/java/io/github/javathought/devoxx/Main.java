@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.server.TracingConfig;
+import org.glassfish.jersey.server.filter.CsrfProtectionFilter;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
@@ -64,6 +65,7 @@ public class Main {
         rc.property(SelectableEntityFilteringFeature.QUERY_PARAM_NAME, "select");
         rc.register(JacksonFeature.class);
         rc.register(RolesAllowedDynamicFeature.class);
+        rc.register(CsrfProtectionFilter.class);
 
         rc.register(ApiListingResource.class);
         rc.register(SwaggerSerializers.class);
