@@ -52,7 +52,7 @@ public class Main {
      * @return Grizzly HTTP server.
      */
     public static HttpServer startServer(int port) {
-        Map<String, Object> properties = new HashMap();
+        HashMap properties = new HashMap();
 
         bridgeLog();
 
@@ -100,16 +100,16 @@ public class Main {
         }
     }
 
-    static HttpServer startServer() {
+    private static HttpServer startServer() {
         return startServer(BACKEND_PORT);
     }
 
 
-    static String getBaseUri() {
+    private static String getBaseUri() {
         return getBaseUri(BACKEND_PORT);
     }
 
-    private static String getBaseUri(int port) {
+    static String getBaseUri(int port) {
         return String.format(BASE_URI, port);
     }
 

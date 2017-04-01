@@ -21,7 +21,6 @@ public class CrossDomainFilter implements ContainerResponseFilter {
 
         // TODO : disable for production
         // *** ONLY FOR DEMO ***
-/*
 //        response.getHeaders().add("Access-Control-Allow-Origin", "http://localhost:3002");
         response.getHeaders().add("Access-Control-Allow-Origin", "*");
         response.getHeaders().add("Access-Control-Allow-Headers", "Content-Range, Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
@@ -30,6 +29,5 @@ public class CrossDomainFilter implements ContainerResponseFilter {
         response.getHeaders().add("Access-Control-Allow-Credentials", "*");
         response.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD, PATCH");
         response.getHeaders().add("Access-Control-Max-Age", "*");
-*/
     }
 }

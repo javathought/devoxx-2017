@@ -27,8 +27,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 
 
     private static final Logger LOG = LoggerFactory.getLogger(SecurityFilter.class);
-    private static final String AUTHORIZATION_PROPERTY = "Authorization";
-//    private static final String AUTHENTICATION_SCHEME = "Basic";
+    public static final String AUTHORIZATION_PROPERTY = "Authorization";
     private static final String AUTHENTICATION_SCHEME = "Bearer";
     private static final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
             .entity("You cannot access this resource").build();
