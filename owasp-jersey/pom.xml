@@ -17,8 +17,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <db.url>jdbc:mysql://localhost:3306/devoxx_tia</db.url>
+        <db.url>jdbc:mysql://localhost:3306/devoxx_tia?useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Paris</db.url>
         <db.username>devoxx</db.username>
+        <db.password>devoxx</db.password>
         <!--<Set name="driverClassName">com.mysql.jdbc.Driver</Set>-->
     </properties>
 

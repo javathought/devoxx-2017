@@ -28,7 +28,10 @@ public class Connexion {
 
     private Connexion() {
         try {
-            dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/devoxx_tia",
+//            dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/devoxx_tia",
+            dbConnection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/devoxx_tia?useJDBCCompliantTimezoneShift=true" +
+                            "&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris",
                     "devoxx", "owasp-2017;");
         } catch (SQLException e) {
             LOG.error("Unable to create connection", e);
