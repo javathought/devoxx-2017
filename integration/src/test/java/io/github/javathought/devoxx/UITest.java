@@ -1,38 +1,41 @@
 package io.github.javathought.devoxx;
 
 //import com.thoughtworks.selenium/.Selenium;
+
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-//import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxBinary;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-//import org.openqa.selenium.firefox.FirefoxOptions;
+import org.testcontainers.containers.BrowserWebDriverContainer;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+
+//import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
+//import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class UITest {
 
     private WebDriver driver;
     private String baseUrl;
 //    private Selenium withSelenium;
+
+    @Rule
+    public BrowserWebDriverContainer chrome =
+            new BrowserWebDriverContainer()
+                    .withDesiredCapabilities(DesiredCapabilities.chrome());
 
     @Before
     public void setUp() throws Exception {
@@ -44,10 +47,15 @@ public class UITest {
 
         ChromeDriverManager.getInstance().setup();
 //        System.setProperty("webdriver.chrome.driver", "C:\\dvi\\tools\\selenium\\drivers\\chromedriver.exe");
+
+
+//        driver = chrome.getWebDriver();
+//        baseUrl = "https://" + chrome.getTestHostIpAddress() + ":9090/";
+
         driver = new ChromeDriver();
-        
-        
         baseUrl = "https://localhost:9090/";
+
+
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 //        withSelenium = new WebDriverBackedSelenium(driver, baseUrl);
     }
