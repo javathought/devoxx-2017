@@ -1,6 +1,5 @@
 package io.github.javathought.devoxx.dao;
 
-import io.github.javathought.devoxx.model.Credentials;
 import io.github.javathought.devoxx.model.Todo;
 import io.github.javathought.devoxx.model.User;
 import org.jooq.Record;
@@ -13,8 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static io.github.javathought.devoxx.dao.Connexion.UUIDToBytes;
-import static io.github.javathought.devoxx.dao.Connexion.asUUID;
+import static io.github.javathought.devoxx.dao.Connexion.uuidToBytes;
+import static io.github.javathought.devoxx.dao.Connexion.asUuid;
 import static io.github.javathought.devoxx.db.Tables.TODOS;
 import static org.jooq.tools.StringUtils.defaultIfNull;
 
@@ -34,14 +33,14 @@ public class TodosDao {
 
     public static Optional<Todo> getById(UUID id) {
         return DSL.using(conn).selectFrom(TODOS)
-                .where(TODOS.UUID.eq(UUIDToBytes(id)))
+                .where(TODOS.UUID.eq(uuidToBytes(id)))
                 .fetchOptional()
                 .map(TodosDao::mapTodo);
     }
 
     public static Optional<Todo> getByUuidAndUser(UUID id, User userPrincipal) {
         return DSL.using(conn).selectFrom(TODOS)
-                .where(TODOS.UUID.eq(UUIDToBytes(id)))
+                .where(TODOS.UUID.eq(uuidToBytes(id)))
                 .and(TODOS.USER_ID.eq(userPrincipal.getId()))
                 .fetchOptional()
                 .map(TodosDao::mapTodo);
@@ -56,7 +55,7 @@ public class TodosDao {
                 TODOS.DESCRIPTION
         )
                 .values (
-                        UUIDToBytes(UUID.randomUUID()),
+                        uuidToBytes(UUID.randomUUID()),
                         todo.getUserId(),
                         todo.getSummary(),
                         todo.getDescription()
@@ -70,13 +69,13 @@ public class TodosDao {
             DSL.using(conn).update(TODOS)
                     .set(TODOS.SUMMARY, todo.getSummary())
                     .set(TODOS.DESCRIPTION, todo.getDescription())
-                    .where(TODOS.UUID.eq(UUIDToBytes(todo.getUuid())))
+                    .where(TODOS.UUID.eq(uuidToBytes(todo.getUuid())))
                     .execute();
     }
 
     public static void delete(UUID id) {
         DSL.using(conn).delete(TODOS)
-                .where(TODOS.UUID.eq(UUIDToBytes(id)))
+                .where(TODOS.UUID.eq(uuidToBytes(id)))
                 .execute();
     }
 
@@ -90,7 +89,7 @@ public class TodosDao {
     public static Todo mapTodo(Record record) {
         Todo todo = new Todo(
                 record.get(TODOS.ID),
-                asUUID(record.get(TODOS.UUID)),
+                asUuid(record.get(TODOS.UUID)),
                 defaultIfNull(record.get(TODOS.USER_ID),0L),
                 record.get(TODOS.SUMMARY),
                 record.get(TODOS.DESCRIPTION));

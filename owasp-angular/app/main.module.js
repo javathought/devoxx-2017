@@ -33,7 +33,8 @@ module('devoxxApp', [
             controller  : 'LoginController'
           })
           .state('todos', {
-            url         : '/todos',
+            url         : '/todos', 
+            title       : 'Liste des tâches',     
             templateUrl : 'app/components/todos/list-todos.html',
             controller  : 'ListTodosController'
           })
@@ -62,8 +63,8 @@ module('devoxxApp', [
 
 })
   
-.run(['$rootScope', '$location', '$cookieStore', '$http', 'AuthenticationService',
-    function ($rootScope, $location, $cookieStore, $http, AuthenticationService) {
+.run(['$rootScope', '$location', '$cookieStore', '$http', 'AuthenticationService', '$state', '$timeout',
+    function ($rootScope, $location, $cookieStore, $http, AuthenticationService, $state, $timeout) {
         // keep user logged in after page refresh
         $rootScope.globals = $cookieStore.get('globals') || {};
         if ($rootScope.globals.currentUser) {
@@ -77,7 +78,15 @@ module('devoxxApp', [
                 $location.path('/login');
             }
 
+/*
+        $rootScope.$on('$stateChangeSuccess', function(_, current) {
+            document.title = current.$$route.title;
+        });
+*/
 
+            $rootScope.$on('$stateChangeSuccess', function() {
+                $timeout(function() { document.title = $state.current.title || 'devoxx 2017'; }, 100);
+            });
 
 
         });

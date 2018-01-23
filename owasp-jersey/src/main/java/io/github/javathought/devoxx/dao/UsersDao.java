@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static io.github.javathought.devoxx.dao.Connexion.UUIDToBytes;
+import static io.github.javathought.devoxx.dao.Connexion.uuidToBytes;
 import static io.github.javathought.devoxx.db.Tables.USERS;
 
 /**
@@ -55,7 +55,7 @@ public class UsersDao {
                 USERS.PASSWORD
         )
                 .values (
-                        UUIDToBytes(UUID.randomUUID()),
+                        uuidToBytes(UUID.randomUUID()),
                         user.getName(),
                         user.getKey()
                 )

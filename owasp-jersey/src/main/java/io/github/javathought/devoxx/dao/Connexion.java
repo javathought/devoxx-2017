@@ -31,7 +31,7 @@ public class Connexion {
 //            dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/devoxx_tia",
             dbConnection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/devoxx_tia?useJDBCCompliantTimezoneShift=true" +
-                            "&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris",
+                            "&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris&autoReconnect=true",
                     "devoxx", "owasp-2017;");
         } catch (SQLException e) {
             LOG.error("Unable to create connection", e);
@@ -42,30 +42,14 @@ public class Connexion {
         return dbConnection;
     }
 
-/*    public static UUID toUUID(byte[] bytes) {
-        if (bytes.length != 16) {
-            throw new IllegalArgumentException();
-        }
-        int i = 0;
-        long msl = 0;
-        for (; i < 8; i++) {
-            msl = (msl << 8) | (bytes[i] & 0xFF);
-        }
-        long lsl = 0;
-        for (; i < 16; i++) {
-            lsl = (lsl << 8) | (bytes[i] & 0xFF);
-        }
-        return new UUID(msl, lsl);
-    }*/
-
-    public static byte[] UUIDToBytes(UUID uuid) {
+    public static byte[] uuidToBytes(UUID uuid) {
         return ByteBuffer.wrap(new byte[16])
                 .order(ByteOrder.BIG_ENDIAN)
                 .putLong(uuid.getMostSignificantBits())
                 .putLong(uuid.getLeastSignificantBits()).array();
     }
 
-    public static UUID asUUID(byte[] bytes){
+    public static UUID asUuid(byte[] bytes){
         ByteBuffer bb = ByteBuffer.wrap(bytes);
         long firstLong = bb.getLong();
         long secondLong = bb.getLong();

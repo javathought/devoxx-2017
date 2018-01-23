@@ -10,6 +10,7 @@ public class AppSteps {
 
     private static boolean initialized = false;
     private WebDriver driver;
+    private String baseUrl;
 
     public AppSteps() {
         ChromeDriverManager.getInstance().setup();
@@ -22,5 +23,12 @@ public class AppSteps {
     public WebDriver getDriver() {
         return driver;
     }
-    
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
 }

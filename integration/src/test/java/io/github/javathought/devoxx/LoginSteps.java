@@ -1,5 +1,6 @@
 package io.github.javathought.devoxx;
 
+import cucumber.api.PendingException;
 import cucumber.api.java8.En;
 import cucumber.api.java8.Fr;
 import org.openqa.selenium.By;
@@ -12,7 +13,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-public class LoginSteps extends AppSteps implements Fr, En {
+public class LoginSteps implements Fr, En {
 
     public static final String USERNAME_FIELD_ID = "username";
     public static final String PASSWORD_FIELD_ID = "password";
@@ -40,8 +41,8 @@ public class LoginSteps extends AppSteps implements Fr, En {
 */
         
         Given("^l'url de l'application \"([^\"]*)\"$", (String url) -> {
-            baseUrl = url;
-            driver.get(baseUrl);
+            withAppSteps.setBaseUrl(url);
+            driver.get(withAppSteps.getBaseUrl());
         });
 
         When("^je me connecte avec le compte \"([^\"]*)\" et le mot de passe \"([^\"]*)\"$", (String user, String pwd) -> {
@@ -67,6 +68,11 @@ public class LoginSteps extends AppSteps implements Fr, En {
             wait1.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("login-error"))));
             assertThat(driver.findElement(By.id("login-error")).getText(), containsString("Username or password is incorrect"));
             ;
+        });
+        Et("^je ferme le navigateur$", () -> {
+            if (driver != null) {
+                driver.quit();
+            }
         });
     }
 }

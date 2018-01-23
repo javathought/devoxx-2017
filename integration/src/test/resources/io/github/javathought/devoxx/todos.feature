@@ -8,5 +8,6 @@
       Alors la connexion est acceptée
       
     Scénario: visualisation des todos
-      Quand je vais à la page "todos"
+      Quand je vais à la page "#todos"
+      Et je ferme le navigateur
       
