@@ -1,5 +1,6 @@
 #language: fr
-  
+
+  @Todos
   Fonctionnalité: En tant qu'utilisateur, je veux pouvoir consulter mes "todos"
     
     Contexte: les informations d'identification sont correctes
@@ -8,6 +9,7 @@
       Alors la connexion est acceptée
       
     Scénario: visualisation des todos
-      Quand je vais à la page "#todos"
-      Et je ferme le navigateur
+      Quand je clique sur le menu "menu_todos"
+#      Quand je vais à la page "#todos"
+#      Et je ferme le navigateur
       

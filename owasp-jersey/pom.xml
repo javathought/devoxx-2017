@@ -240,6 +240,7 @@ jackson preferred on Moxy
                     <mainClass>io.github.javathought.devoxx.Main</mainClass>
                 </configuration>
             </plugin>
+<!--
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
@@ -256,6 +257,7 @@ jackson preferred on Moxy
                     </execution>
                 </executions>
             </plugin>
+-->
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>

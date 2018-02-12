@@ -14,7 +14,7 @@ public class InitDBTest {
     
     @Test
     public void shouldHaveBadPassword() throws PasswordStorage.CannotPerformOperationException {
-        out.println(createHash("admin"));
+        out.println(createHash("demo"));
         out.println(Hex.encodeHexString(uuidToBytes(UUID.randomUUID())));
         out.println(Hex.encodeHexString(uuidToBytes(UUID.randomUUID())));
     }

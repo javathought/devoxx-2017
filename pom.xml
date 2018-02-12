@@ -31,6 +31,7 @@
 
     <build>
         <plugins>
+<!--
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
@@ -47,6 +48,7 @@
                     <cveValidForHours>48</cveValidForHours>
                 </configuration>
             </plugin>
+-->
         </plugins>
     </build>
 

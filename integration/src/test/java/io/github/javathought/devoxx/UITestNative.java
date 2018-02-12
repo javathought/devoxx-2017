@@ -1,6 +1,8 @@
 package io.github.javathought.devoxx;
 
 import org.junit.*;
+import org.junit.rules.TestName;
+import org.junit.runner.Description;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,40 +11,65 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testcontainers.containers.BrowserWebDriverContainer;
-//import org.testcontainers.containers.ContainerWatcher;
+import org.testcontainers.containers.Network;
+import org.testcontainers.containers.VncRecordingContainer;
 
 import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 
-public class UITest {
+public class UITestNative {
 
     private WebDriver driver;
     private static String baseUrl;
 
-    @ClassRule
-    public static BrowserWebDriverContainer chrome = new BrowserWebDriverContainer()
-            .withDesiredCapabilities(DesiredCapabilities.chrome())
-            .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("target"));
 
-//    @Rule
-//    public ContainerWatcher watcher = new ContainerWatcher(chrome);
+
+//    static File recordingDir = new File("build/recording-" + System.currentTimeMillis());
+    static File recordingDir = new File("target");
+
+    @ClassRule
+    public static BrowserWebDriverContainer chrome = new BrowserWebDriverContainer<>()
+            .withDesiredCapabilities(DesiredCapabilities.chrome())
+            .withNetwork(Network.SHARED)
+            .withNetworkAliases("vnchost")
+            .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.SKIP, null);
+
+/*
+    @Rule
+    public VncRecordingContainer vnc = new VncRecordingContainer(chrome);
+
+    @Rule
+    public TestName testName = new TestName();
+
+    @After
+    public void tearDown() throws Exception {
+        try(InputStream inputStream = vnc.streamRecording()) {
+            File target = new File(recordingDir, testName.getMethodName() + ".flv");
+            target.getParentFile().mkdirs();
+            Files.copy(inputStream, target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+*/
+
+    @Rule
+    public VncRecordingContainer vnc = new VncRecordingContainer(chrome) {
+        @Override
+        protected void failed(Throwable e, Description description) {
+            saveRecordingToFile(new File(recordingDir, "FAILED-" + description.getMethodName() + ".flv"));
+            super.failed(e, description);
+        }
+    };
 
 
     @Before
     public void setUp() throws Exception {
-        // On instancie notre withSelenium, et on configure notre temps d'attente
-        
-//        FirefoxOptions opts = new FirefoxOptions().setBinary("C:\\Users\\C349459\\AppData\\Local\\Mozilla Firefox\\firefox.exe");
-//        System.setProperty("webdriver.gecko.driver", "C:\\dvi\\tools\\selenium\\drivers\\geckodriver.exe");
-//        driver = new FirefoxDriver(opts);
-
-
-//        RemoteWebDriver driver = chrome.getWebDriver();
-//        driver.get("https://wikipedia.org");
 
         //  ****   Selenium with testcontainers
         driver = chrome.getWebDriver();
@@ -58,10 +85,7 @@ public class UITest {
 
 
 //        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-//        withSelenium = new WebDriverBackedSelenium(driver, baseUrl);
-
         driver.manage().deleteAllCookies();
-
     }
 
     @Test
@@ -141,7 +165,6 @@ public class UITest {
         wait1.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("login-error"))));
         assertThat(driver.findElement(By.id("login-error")).getText(), containsString("Username or password is incorrect"));
     }
-
 
 /*
     @Test

@@ -38,6 +38,17 @@ public class Connexion {
         }
     }
 
+    public Connexion setConnection(String dbUrl, String user, String pwd) {
+        try {
+//            dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/devoxx_tia",
+            ourInstance.dbConnection = DriverManager.getConnection(
+                    dbUrl, user, pwd);
+        } catch (SQLException e) {
+            LOG.error("Unable to create connection", e);
+        }
+        return this;
+    }
+
     public Connection getDbConnection() {
         return dbConnection;
     }

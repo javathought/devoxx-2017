@@ -1,6 +1,5 @@
 package io.github.javathought.devoxx;
 
-import cucumber.api.PendingException;
 import cucumber.api.java8.En;
 import cucumber.api.java8.Fr;
 import org.openqa.selenium.By;
@@ -42,11 +41,11 @@ public class LoginSteps implements Fr, En {
         
         Given("^l'url de l'application \"([^\"]*)\"$", (String url) -> {
             withAppSteps.setBaseUrl(url);
+            driver.manage().deleteAllCookies();
             driver.get(withAppSteps.getBaseUrl());
         });
 
-        When("^je me connecte avec le compte \"([^\"]*)\" et le mot de passe \"([^\"]*)\"$", (String user, String pwd) -> {
-            username = user;
+        When("^je me connecte avec le compte \"([^\"]*)\" et le mot de passe \"([^\"]*)\"$", (String user, String pwd) -> { username = user;
             wait1.until(ExpectedConditions.visibilityOf(driver.findElement(By.id(USERNAME_FIELD_ID))));
             driver.findElement(By.id(USERNAME_FIELD_ID)).clear();
             driver.findElement(By.id(USERNAME_FIELD_ID)).sendKeys(user);
@@ -75,4 +74,15 @@ public class LoginSteps implements Fr, En {
             }
         });
     }
+
+
+
+//    @After
+//    public void tearDownScenario(Scenario sc) {
+//        if (sc.isFailed()) {
+//            BDDRunnerTest.watcher.
+//        }
+//
+//    }
+
 }
