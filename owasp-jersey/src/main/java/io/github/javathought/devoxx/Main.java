@@ -88,7 +88,7 @@ public class Main {
      * @throws IOException Stops if I/O problem
      */
     public static void main(String[] args) throws IOException {
-        if (Connexion.getInstance().getDbConnection() != null) {
+        if (Connexion.getInstance().init().getDbConnection() != null) {
 
             final HttpServer server = startServer();
             System.out.println(String.format("Jersey app started with WADL available at "

@@ -88,7 +88,7 @@ public class ContainerListener extends RunListener {
     @Override
     public void testFailure(Failure failure) throws Exception {
         Description description = failure.getDescription();
-        if (depth(description) == 2) {
+        if (depth(description) == 2 && vnc != null) {
             vnc.failed(failure.getException(), description);
             vnc.stop();
             vnc = null;

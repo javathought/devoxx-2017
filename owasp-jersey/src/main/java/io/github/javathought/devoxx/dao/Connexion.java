@@ -27,15 +27,6 @@ public class Connexion {
     }
 
     private Connexion() {
-        try {
-//            dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/devoxx_tia",
-            dbConnection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/devoxx_tia?useJDBCCompliantTimezoneShift=true" +
-                            "&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris&autoReconnect=true",
-                    "devoxx", "owasp-2017;");
-        } catch (SQLException e) {
-            LOG.error("Unable to create connection", e);
-        }
     }
 
     public Connexion setConnection(String dbUrl, String user, String pwd) {
@@ -68,4 +59,17 @@ public class Connexion {
     }
 
 
+    public Connexion init() {
+        try {
+//            dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/devoxx_tia",
+            dbConnection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/devoxx_tia?useJDBCCompliantTimezoneShift=true" +
+                            "&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris&autoReconnect=true",
+                    "devoxx", "owasp-2017;");
+        } catch (SQLException e) {
+            LOG.error("Unable to create connection", e);
+        }
+
+        return this;
+    }
 }

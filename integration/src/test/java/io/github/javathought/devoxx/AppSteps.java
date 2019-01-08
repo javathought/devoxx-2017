@@ -17,7 +17,7 @@ public class AppSteps {
     public AppSteps() {
 
         runningMode = "live";
-        runningMode = "container";
+//        runningMode = "container";
 
         if ("container".equalsIgnoreCase(runningMode)) {
 
